@@ -13,24 +13,21 @@ body {
     align-items:center;
     justify-content:center;
     font-family: Arial;
-    background: radial-gradient(circle at top, #ff7eb3, #1a1a2e);
+    background: radial-gradient(circle,#ff7eb3,#1a1a2e);
     color:white;
-    overflow:hidden;
 }
 
 h1 {
-    font-size:50px;
-    text-shadow:0 0 20px rgba(255,255,255,0.5);
+    font-size:45px;
 }
 
 .cake {
-    width:260px;
+    width:250px;
     height:140px;
-    background: linear-gradient(135deg,#ff4d6d,#ff758c);
+    background:#ff4d6d;
     border-radius:20px;
     position:relative;
-    margin-top:40px;
-    box-shadow:0 0 30px rgba(0,0,0,0.5);
+    margin-top:30px;
 }
 
 .candle {
@@ -39,13 +36,12 @@ h1 {
     background:white;
     position:absolute;
     top:-45px;
-    border-radius:3px;
 }
 
 .flame {
     width:12px;
     height:18px;
-    background: radial-gradient(circle, yellow, orange);
+    background:orange;
     border-radius:50%;
     position:absolute;
     top:-18px;
@@ -59,9 +55,8 @@ h1 {
 #message {
     display:none;
     margin-top:30px;
-    font-size:24px;
+    font-size:22px;
     text-align:center;
-    color:#fff;
 }
 
 #levelUp {
@@ -69,10 +64,8 @@ h1 {
     top:40%;
     left:50%;
     transform:translate(-50%,-50%) scale(0);
-    font-size:55px;
-    font-weight:bold;
+    font-size:45px;
     color:gold;
-    text-shadow:0 0 25px rgba(255,215,0,0.8);
 }
 
 .show {
@@ -80,7 +73,7 @@ h1 {
 }
 
 @keyframes pop {
-    50% { transform:translate(-50%,-50%) scale(1.6);}
+    50% { transform:translate(-50%,-50%) scale(1.5);}
     100% { transform:translate(-50%,-50%) scale(1);}
 }
 </style>
@@ -96,22 +89,27 @@ h1 {
     <div class="candle" style="left:190px;"><div class="flame"></div></div>
 </div>
 
-<p>💨 Üfle bakalım... mikrofon seni bekliyo 😏</p>
+<p>💨 Üfle (mikrofon izin ver)</p>
 
 <div id="message">
-😂 Doğum günün kutlu olsun Arda 😂<br>
-Artık “genç” kategorisinden “tecrübeli”ye geçtin 😏<br>
-Refleksler düşebilir ama karizma sabit 😎
+😂 Doğum günün kutlu olsun Arda 😂<br><br>
+21 senedir senin gibi bir gavat dünyaya gelmemiştir.<br>
+Ama yine de iyi ki varsın lan 😎🎉
 </div>
 
 <div id="levelUp">🎮 LEVEL UP +1</div>
 
 <script>
 
-// SES EFEKTİ
-function playSound(){
-    let audio = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
-    audio.play();
+// SES (İNTERNETSİZ)
+function playBeep(){
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    osc.type = "square";
+    osc.frequency.setValueAtTime(400, ctx.currentTime);
+    osc.connect(ctx.destination);
+    osc.start();
+    setTimeout(()=>osc.stop(),200);
 }
 
 // MUM SÖNDÜR
@@ -119,7 +117,7 @@ function blow(){
     document.querySelectorAll(".flame").forEach(f=>f.style.display="none");
     document.getElementById("message").style.display="block";
     document.getElementById("levelUp").classList.add("show");
-    playSound();
+    playBeep();
 }
 
 // MİKROFON
@@ -146,7 +144,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     detect();
 })
 .catch(()=>{
-    alert("Mikrofon izni vermezsen üfleyemezsin 😄");
+    alert("Mikrofon izni ver kanka yoksa üfleyemezsin 😄");
 });
 
 </script>
